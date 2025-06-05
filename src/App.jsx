@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [todos, settodos] = useState(() => {
+    const items = localStorage.getItem("todos");
+    return items ? JSON.parse(items) : [];
+  });
 
+  const [input, setInput] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const newTodo = { id: todos.length, todo: input.trim(), done: false };
+    settodos((prev) => [...prev, newTodo]);
+    setInput("");
+  };
+
+  console.log(todos[0]);
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <div className="box">
+        <div className="todo">
+          <h1 className="title">To Do List</h1>
+          <div className="form">
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="todo"
+                id="todo-f"
+                placeholder="Add a new task"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+              <button type="submit" id="todo-btn">
+                Add
+              </button>
+            </form>
+          </div>
 
-export default App
+          {todos.map((todo) => {
+            return (
+              <>
+                <div></div>
+              </>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default App;
