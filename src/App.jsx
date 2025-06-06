@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import trash from "./assets/trash3.svg";
 
 const App = () => {
   const [todos, settodos] = useState(() => {
@@ -20,8 +21,10 @@ const App = () => {
     settodos((prev) => [...prev, newTodo]);
     setInput("");
   };
+  let check = false;
 
   console.log(todos[0]);
+  console.log(check);
   return (
     <>
       <div className="box">
@@ -42,14 +45,48 @@ const App = () => {
               </button>
             </form>
           </div>
+          <div style={{ marginBottom: "15px" }}>
+            {todos.map((todo) => {
+              return (
+                <>
+                  <div className="todo-list">
+                    <div className="set">
+                      <input
+                        type="checkbox"
+                        checked={todo.done}
+                        onChange={() => {
+                          settodos((prev) =>
+                            prev.map((t) =>
+                              t.id === todo.id ? { ...t, done: !todo.done } : t
+                            )
+                          );
+                        }}
+                      />
+                      <p
+                        key={todo.id}
+                        className="todo-item"
+                        style={{
+                          textDecoration: todo.done ? "line-through" : "none",
+                        }}
+                      >
+                        {todo.todo}
+                      </p>
+                    </div>
 
-          {todos.map((todo) => {
-            return (
-              <>
-                <div></div>
-              </>
-            );
-          })}
+                    <button
+                      onClick={() => {
+                        settodos((prev) =>
+                          prev.filter((t) => t.id !== todo.id)
+                        );
+                      }}
+                    >
+                      <img src={trash} alt="trash can" id="trash" />
+                    </button>
+                  </div>
+                </>
+              );
+            })}
+          </div>
         </div>
       </div>
     </>
