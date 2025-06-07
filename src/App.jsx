@@ -46,6 +46,20 @@ const App = () => {
             </form>
           </div>
           <div style={{ marginBottom: "15px" }}>
+            {todos.length === 0 && (
+              <>
+                <p
+                  style={{
+                    color: "#888",
+                    textAlign: "center",
+                    margin: "15px",
+                    fontSize: "18px",
+                  }}
+                >
+                  Your list is empty
+                </p>
+              </>
+            )}
             {todos.map((todo) => {
               return (
                 <>
